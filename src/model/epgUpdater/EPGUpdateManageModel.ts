@@ -269,6 +269,12 @@ class EPGUpdateManageModel extends EventEmitter implements IEPGUpdateManageModel
         this.emit(EPGUpdateEvent.STREAM_STARTED);
 
         return new Promise<void>(async (_resolve: () => void, reject: (err: Error) => void) => {
+            setTimeout(() => {
+                this.log.system.info('reset event stream');
+                this.stopStream(eventStream);
+                reject(new Error('ResetEventStream'));
+            }, 60 * 60 * 1000);
+
             // エラー処理
             eventStream.once('error', err => {
                 this.log.system.error('event stream error');
